@@ -1,5 +1,6 @@
 const express = require(`express`);
 const expressMongoDB = require(`express-mongo-db`);
+const ObjectID = require('mongodb').ObjectID;
 const bodyParser = require(`body-parser`);
 const porta = 3000;
 
@@ -18,6 +19,24 @@ app.get(`/personagens`, (req, res) => {
   });
 });
 
+app.get(`/personagens/:id`, (req, res) => {
+  let query = {
+    _id : ObjectID(req.params.id)
+  };
+  req.db.collection(`personagens`).findOne(query, (err, data) => {
+    if(err){
+      res.status(500).send();
+      return;
+    };
+
+    if(!data){
+      res.status(404).send(`ID não encontrado!`);
+      return;
+    };
+    
+    res.send(data);
+  });
+});
 
 app.post(`/personagem`, (req, res) => {
   req.db.collection(`personagens`).insert(req.body, err => {
