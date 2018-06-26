@@ -21,8 +21,8 @@ app.get(`/personagens`, (req, res) => {
   });
 });
 
-app.get(`/personagens/:id`, (req, res) => {
-  let query = {
+app.get(`/personagem/:id`, (req, res) => {
+  const query = {
     _id : ObjectID(req.params.id)
   };
   req.db.collection(`personagens`).findOne(query, (err, data) => {
@@ -50,6 +50,17 @@ app.post(`/personagem`, (req, res) => {
   });
 });
 
-
+app.put(`/personagem/:id`, (req, res) => {
+  const query = {
+    _id: ObjectID(req.params.id)
+  };
+  req.db.collection(`personagens`).updateOne(query, req.body, (err, data) => {
+    if(err){
+      res.status(500).send();
+      return;
+    }
+    res.send(data);
+  });
+});
 
 app.listen(porta, _ => console.log(`Servidor iniciado com sucesso!`));
