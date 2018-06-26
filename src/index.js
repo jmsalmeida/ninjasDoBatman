@@ -2,12 +2,14 @@ const express = require(`express`);
 const expressMongoDB = require(`express-mongo-db`);
 const ObjectID = require('mongodb').ObjectID;
 const bodyParser = require(`body-parser`);
+const cors = require('cors');
 const porta = 3000;
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(expressMongoDB(`mongodb://localhost/batmanUniverse`));
+app.use(cors());
 
 app.get(`/personagens`, (req, res) => {
   req.db.collection(`personagens`).find().toArray((err, data) => {
@@ -33,7 +35,7 @@ app.get(`/personagens/:id`, (req, res) => {
       res.status(404).send(`ID não encontrado!`);
       return;
     };
-    
+
     res.send(data);
   });
 });
