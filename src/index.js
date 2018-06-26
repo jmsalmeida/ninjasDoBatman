@@ -19,4 +19,16 @@ app.get(`/personagens`, (req, res) => {
 });
 
 
+app.post(`/personagem`, (req, res) => {
+  req.db.collection(`personagens`).insert(req.body, err => {
+    if(err){
+      res.status(500).send();
+      return;
+    }
+    res.send(req.body);
+  });
+});
+
+
+
 app.listen(porta, _ => console.log(`Servidor iniciado com sucesso!`));
